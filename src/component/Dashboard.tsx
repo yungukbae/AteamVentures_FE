@@ -1,14 +1,14 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, HTMLInputTypeAttribute, useEffect, useRef, useState} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import Switch from '@material-ui/core/Switch';
-import {makeStyles,withStyles} from "@material-ui/core/styles";
+import {Theme, makeStyles, createStyles,withStyles} from "@material-ui/core/styles";
 import {options} from '../DropDownData';
 import useFetch from "../hook/useFetch";
 import ItemFilter from "./ItemFilter";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => createStyles({
     root: {
         flexGrow: 1,
     },
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
         height:'32px',
         fontSize:'20px',
         lineHeight:'32px',
-        fontWeight:'600'
+        fontWeight:600
     },
     Content:{
         width:'284px',
@@ -125,7 +125,7 @@ const ToggleSwitch = withStyles({
     root:{
         padding:'0px',
         height:'32px',
-        zIndex:'-1'
+        zIndex:-1
     },
     switchBase: {
         padding:'0px',
@@ -151,66 +151,72 @@ const ToggleSwitch = withStyles({
     },
 })(Switch);
 
+export interface document{
+    getElementById:{
+        elementId:string
+    }
+}
 
 const Dashboard = () => {
     const classes = useStyles();
-    const listRef = useRef();
-    const {data,error} = useFetch('http://localhost:8000/requests')
-    const [toggle, setToggle] = useState(false);
-    const [procbtn,setProcbtn] = useState(0);
-    const [matbtn,setMatbtn] = useState(0);
-    const [filter, setFilter] = useState([]);
+    const listRef = useRef<HTMLDivElement>(null);
+    const {data,error}:{data:any[]; error:string} = useFetch('http://localhost:8000/requests')
+    const [toggle, setToggle] = useState<boolean>(false);
+    const [procbtn,setProcbtn] = useState<number>(0);
+    const [matbtn,setMatbtn] = useState<number>(0);
+    const [filter, setFilter] = useState<string[]>([]);
 
     useEffect(() => {
-
-        const handleClose = (e) => {
+        const handleClose = (e:any) => {
             if(listRef.current && !listRef.current.contains(e.target)){
-                document.getElementById("ProcessList").style.display = "none"
-                document.getElementById("MaterialList").style.display = "none"
+                const procele = document.getElementById("ProcessList") as HTMLDivElement
+                const matele = document.getElementById("MaterialList") as HTMLDivElement
+                procele.style.display = "none"
+                matele.style.display = "none"
             }
         }
 
-        document.addEventListener('mousedown',handleClose);
-        return () => { window.addEventListener('mousedown',handleClose); }
+        document.addEventListener('mousedown',(e) => handleClose(e));
+        return () => { window.addEventListener('mousedown',(e) => handleClose(e)); }
     })
 
-    const handleClick = (type) =>{
+    const handleClick = (type:string) =>{
         let none = (type === "MaterialList") ? "ProcessList" : "MaterialList"
-
-        if(document.getElementById(type).style.display === "flex"){
-            document.getElementById(type).style.display = "none"
-
+        const typeele = document.getElementById(type) as HTMLDivElement
+        const noneele = document.getElementById(none) as HTMLDivElement
+        if(typeele.style.display  === "flex"){
+            typeele.style.display = "none"
         }else if(type){
-            document.getElementById(type).style.display = "flex"
-            document.getElementById(none).style.display = "none"
+            typeele.style.display = "flex"
+            noneele.style.display = "none"
         }
     }
 
-    const handleCheck = (isChecked,item) => {
+    const handleCheck = (isChecked:boolean, item:string) => {
 
         if(isChecked){
             setFilter(filter => filter.concat(item))
         }else{
             setFilter(filter.filter((val) => val !== item))
         }
-        handleBtn(isChecked,item)
-        handleReset(isChecked,item)
+        handleBtn(isChecked, item)
+        handleReset(isChecked, item)
     }
 
-    const handleBtn = (isChecked,item) => {
-        const ProcStyle = document.getElementById("ProcessBtn").style
-        const MatStyle = document.getElementById("MaterialBtn").style
+    const handleBtn = (isChecked:boolean, item:string) => {
+        const ProcStyle = document.getElementById("ProcessBtn") as HTMLDivElement
+        const MatStyle = document.getElementById("MaterialBtn") as HTMLDivElement
         const ItemType = (options.process.indexOf(item) > -1) ? ProcStyle : MatStyle;
 
         if(isChecked){
-            ItemType.color = "#FFFFFF"
-            ItemType.backgroundColor = "#1565C0"
+            ItemType.style.color = "#FFFFFF"
+            ItemType.style.backgroundColor = "#1565C0"
             {ItemType === ProcStyle ? setProcbtn(procbtn + 1) : setMatbtn(matbtn + 1) }
 
         }else{
             if((ItemType === ProcStyle && procbtn === 1) || (ItemType === MatStyle && matbtn === 1)){
-                ItemType.color = "#000"
-                ItemType.backgroundColor = "#FFFFFF"
+                ItemType.style.color = "#000"
+                ItemType.style.backgroundColor = "#FFFFFF"
             }
             {ItemType === ProcStyle ? setProcbtn(procbtn - 1) : setMatbtn(matbtn - 1) }
         }
@@ -220,9 +226,10 @@ const Dashboard = () => {
         setToggle(!toggle)
     }
 
-    const handleReset = (isChecked,target) => {
-        const btn = document.getElementById("FilterReset")
-
+    const handleReset = (isChecked:boolean, item:string) => {
+        const btn = document.getElementById("FilterReset") as HTMLDivElement
+        const procele = document.getElementById("ProcessBtn") as HTMLDivElement
+        const matele = document.getElementById("MaterialBtn") as HTMLDivElement
         if(isChecked){
             btn.style.display = "flex"
 
@@ -231,16 +238,16 @@ const Dashboard = () => {
                 btn.style.display = "none"
             }
 
-            if(target === 'button'){
+            if(item === 'button'){
                 btn.style.display = "none"
                 setFilter([])
                 setProcbtn(0)
                 setMatbtn(0)
 
-                document.getElementById("ProcessBtn").style.color = "#000"
-                document.getElementById("ProcessBtn").style.backgroundColor = "#FFFFFF"
-                document.getElementById("MaterialBtn").style.color = "#000"
-                document.getElementById("MaterialBtn").style.backgroundColor = "#FFFFFF"
+                procele.style.color = "#000"
+                procele.style.backgroundColor = "#FFFFFF"
+                matele.style.color = "#000"
+                matele.style.backgroundColor = "#FFFFFF"
             }
         }
     }
@@ -256,7 +263,7 @@ const Dashboard = () => {
                         </Box>
 
                         <Box className={classes.FilterBtn}>
-                        <Box className={classes.DropDownBox} ref={listRef}>
+                        <div className={classes.DropDownBox} ref={listRef}>
                             <div>
                                 <div id="ProcessBtn" className={classes.DropDown} style={{minWidth:'98px',maxWidth:'113px'}} onClick={() => handleClick("ProcessList")}>
                                     { procbtn === 0 ? "가공방식" : `가공방식(${procbtn})`}
@@ -287,8 +294,8 @@ const Dashboard = () => {
                                     })}
                                 </div>
                             </div>
-                        </Box>
-                            <div id="FilterReset" className={classes.ResetBtn} onClick={() => handleReset(false,'button')}>
+                        </div>
+                            <div id="FilterReset" className={classes.ResetBtn} onClick={() => handleReset(false,"button")}>
                                 <img src="img/refresh.png" style={{width:'16px',height:'16px',margin:'8px'}}/> 필터링 리셋
                             </div>
                             <div className={classes.Toggle} >

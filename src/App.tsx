@@ -1,8 +1,7 @@
 import Dashboard from './component/Dashboard'
 import Navbar from "./component/Navbar";
 
-
-function App() {
+const App: React.FC = () => {
   return (
     <div className="App">
         <Navbar/>

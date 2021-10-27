@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box';
 import {makeStyles} from "@material-ui/core/styles";
-import React from "react";
+import React, {useEffect, useState} from "react";
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -139,19 +139,36 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ItemList = ({data}) => {
+interface ItemListData{
+    item: {
+        id:number,
+        title:string,
+        client:string,
+        due:string,
+        count:number,
+        amount:number,
+        method:string[],
+        material:string[],
+        status:string
+    },
+    idx:number
+}
+
+const ItemList = ({data}:{data:any[]}) => {
     const classes = useStyles();
 
     return(
         <>
             <Box className={classes.ItemList}>
-            {data.map((item,idx) => {
+            {data.map(({item, idx}:ItemListData) => {
                 return (
                     <div key={idx} className={classes.ItemCard}>
                         <div className={classes.CardTop}>
                             <div className={classes.Header}>
                                 <div className={classes.Title}>{item.title}</div>
-                                {item.status === "상담중" && <div className={classes.Meeting}>상담중</div> }
+                                { () => {if(item.status === "상담중"){
+                                 <div className={classes.Meeting}>상담중</div>}
+                                }}
                             </div>
                             <div className={classes.Client}>{item.client}</div>
                             <div className={classes.OrderExp}>{item.due} 까지 납기</div>

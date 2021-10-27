@@ -1,11 +1,11 @@
 import ItemList from "./ItemList";
 import React, {useEffect, useState} from "react";
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme, makeStyles, createStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import {options} from '../DropDownData';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => createStyles({
     root: {
         display: 'flex',
         '& > * + *': {
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
         height:'100vh',
         left:'0',
         top:'0',
-        zIndex:'999',
+        zIndex:99,
         backgroundColor:'rgba(211,211,211,0.4)'
     },
     Circle:{
@@ -39,23 +39,30 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ItemFilter = ({filter,toggle,data,error}) => {
+interface ItemFilterProps {
+    filter: string[];
+    toggle: number;
+    data: any[],
+    error: string;
+}
+
+const ItemFilter = ({filter,toggle,data,error}: ItemFilterProps) => {
 
         const classes = useStyles();
         const [loading, setLoading] = useState(false)
-        let [item,setItem] = useState([])
+        let [item,setItem] = useState<object[]>([])
 
         useEffect(() => {
             setLoading(true)
 
             setTimeout(() => {
-                let result = []
+                let result:object[] = []
                 let material = filter.filter(val => options.material.includes(val)) //필터 재료값
                 let method = filter.filter(val => options.process.includes(val))    //필터 가공방식
-                {data && data.forEach((value, idx) => {
-                        let intersection = []
-                        let itemValue = []
-                        itemValue = itemValue.concat(value.material, value.method)
+                {data && data.forEach(({value, idx}:{value: { material:string,method:string },idx:number}):object => {
+                        let intersection: string[] = []
+                        let itemValue: string[] = []
+                        itemValue = itemValue.concat(filter)
 
                         if (material.length > 0 && method.length > 0) {
                             intersection = itemValue.filter(val => filter.includes(val))
@@ -81,7 +88,7 @@ const ItemFilter = ({filter,toggle,data,error}) => {
 
 
                 if(toggle === 1) {                                          //토글 적용시
-                    setItem(data.filter((val) => val.status === "상담중"))
+                    setItem(data.filter((val:{status:string}) => val.status === "상담중"))
                     setLoading(false)
                 }else if(result.length > 0){                                //필터 적용했을떄
                     setItem(result)
@@ -100,7 +107,7 @@ const ItemFilter = ({filter,toggle,data,error}) => {
 
     return (
         <>
-            { item.length > 0 ? <ItemList data={item}/> : <div className={classes.NoItem}>조건에 맞는 견적 요청이 없습니다.</div>}
+            { item.length > 0 ? <ItemList data={item}/> : <div className={classes.NoItem}>조건에 맞는 경적 요청이 없습니다.</div>}
         <Fade in={loading}>
         <div className={classes.Progress}>
             <CircularProgress size={80} className={classes.Circle}/>
