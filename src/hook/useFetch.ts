@@ -6,7 +6,6 @@ const useFetch = (url : string) => {
     const [error, setError] = useState(null);
 
     useEffect( () => {
-
         const fetchData = async () => {
             try{
                 const response = await fetch(url);                                      //fetch요청 응답 값을 넣기위한 변수
@@ -21,7 +20,6 @@ const useFetch = (url : string) => {
             }
         }
         fetchData();
-
     },[url])
     return {data,error}
 }

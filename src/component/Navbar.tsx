@@ -157,6 +157,7 @@ const useStyles = makeStyles((theme:Theme) => createStyles({
 
 
 const Navbar = () => {
+
     const classes = useStyles();
     const menuRef = useRef<HTMLDivElement>(null);                               //메뉴 요소를 담기위한 변수
     const [isOpen, setIsOpen] = useState<boolean>(false);                                //메뉴 상태를 나타내는 변수
@@ -173,8 +174,6 @@ const Navbar = () => {
 
     const handleClick = () => setIsOpen(!isOpen)                                //메뉴버튼 클릭 이벤트
         
-    
-
     return(
         <>
             <div className={classes.root}>
@@ -193,9 +192,7 @@ const Navbar = () => {
                             <Button className={classes.ClientName}>
                                 <img src="img/clientlogo.svg"style={{width:'17px', height:'15px',padding:'2.5px 0px', marginRight:'8px'}} alt="Client Logo"/>A 가공 업체
                             </Button>
-
                             <div className={classes.Divider}/>
-
                             <Button className={classes.LogoutBtn}>로그아웃</Button>
                         </div>
                     </div>
@@ -210,14 +207,12 @@ const Navbar = () => {
                                 </div>
                                 <div className={classes.MenuMain}>
                                     <div className={classes.MenuList}>
-                                        <img src="img/menuclientlogo.svg" style={{width:'15px', height:'15px',padding:'2.5px 0px', marginRight:'8px'}} alt="Client Logo"/> 파트너정밀가공                                    </div>
-
+                                        <img src="img/menuclientlogo.svg" style={{width:'15px', height:'15px',padding:'2.5px 0px', marginRight:'8px'}} alt="Client Logo"/> 파트너정밀가공</div>
                                     <div className={classes.MenuList}>로그아웃</div>
                                 </div>
                             </div>
                             </Slide>
-                            <div className={classes.MenuBack}>
-                            </div>
+                            <div className={classes.MenuBack}/>
                         </Box>
                     </Fade>
                 </div>

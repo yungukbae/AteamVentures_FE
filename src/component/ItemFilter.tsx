@@ -80,7 +80,8 @@ const ItemFilter = ({filter,toggle}:ItemFilterProps ) => {
         const [item,setItem] = useState<Item[]>([])                                         //필터링된 데이터를 담는 변수
 
         useEffect(() => {
-            setLoading(true)                                                                //로딩창 표시
+            setLoading(true)                                                                
+
             setTimeout(() => {
                 let result:Item[] = []                                                      //필터 조건에 맞을경우 해당 오브젝트를 담는 변수
                 let material:string[] = filter.filter(val => options.material.includes(val))//필터 재료값
@@ -127,7 +128,7 @@ const ItemFilter = ({filter,toggle}:ItemFilterProps ) => {
                 
                 {error && setIsOpen(true)}                                                              //데이터 통신중 에러 발생시 알림창 출력
             },500)
-        },[filter,toggle,data,error])                                                                   //필터, 데이터, 에러값을 의존값으로 지정
+        },[filter,toggle,data,error])                                                                   //필터, 데이터, 에러를 의존값으로 지정
 
     const handleClose = (event?: React.SyntheticEvent, reason?: string) => {                            //알럿창을 닫기위한 이벤트 함수
         if (reason === 'clickaway') {

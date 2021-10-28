@@ -147,6 +147,7 @@ const ToggleSwitch = withStyles({
 })(Switch);
 
 const Dashboard = () => {
+
     const classes = useStyles();                                                              //스타일 적용을 위한 상수
     const listRef = useRef<HTMLDivElement>(null);                                             //클릭 이벤트 요소를 지정하기위한 상수
     const [toggle, setToggle] = useState<boolean>(false);                                     //토글 스위치 제어를 위한 변수
@@ -154,7 +155,6 @@ const Dashboard = () => {
     const [matbtn,setMatbtn] = useState<number>(0);                                           //재료 드롭다운 리스트에서 선택한 옵션을 담기위한 변수
     const [filter, setFilter] = useState<string[]>([]);                                       //필터 항목을 담기위한 변수
     
-
     useEffect(() => {
         const handleClose = (e: MouseEvent): void => {                                        //드롭다운 요소 외에 클릭시 드롭다운을 닫는 이벤트 함수
             const ProcList = document.getElementById("ProcessList") as HTMLDivElement                
@@ -181,7 +181,7 @@ const Dashboard = () => {
         }
     }
 
-    const handleCheck = (isChecked:boolean, item:string):void => {                                   //체크박스 체크 이벤트 함수
+    const handleCheck = (isChecked:boolean, item:string):void => {                              //체크박스 체크 이벤트 함수
         if(isChecked){                                                                          //체크되었다면 필터 변수에 추가
             setFilter(filter => filter.concat(item))
         }else{
@@ -212,8 +212,6 @@ const Dashboard = () => {
 
     const handleToggle = ():void => setToggle(!toggle)                                               //토글 스위치 클릭 이벤트 함수
         
-    
-
     const handleReset = (isChecked:boolean, item:string):void => {                                   //필터 리셋 버튼 이벤트 함수
         const ResetStyle = document.getElementById("FilterReset") as HTMLDivElement
         const ProcBtn = document.getElementById("ProcessBtn") as HTMLDivElement                 //가공방식 드롭다운 스타일 제어를 위한 상수
@@ -225,12 +223,10 @@ const Dashboard = () => {
             if(filter.length === 1){                                                            //체크가 해제되고 필터항목이 1개였을경우
                 ResetStyle.style.display = "none"                                               //리셋 버튼 숨기기
             }
-
             if(item === 'button'){                                                              //리셋버튼이 클릭된 경우
                 setFilter([])                                                                   //필터 초기화
                 setProcbtn(0)                                                                   //드롭다운 초기화
                 setMatbtn(0)                                                                    
-
                 ResetStyle.style.display = "none"                                               //리셋 버튼 숨기기
                 ProcBtn.style.color = "#000"                                                  //드롭다운 스타일 초기화
                 ProcBtn.style.backgroundColor = "#FFFFFF"
