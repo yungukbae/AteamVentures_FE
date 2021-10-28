@@ -158,24 +158,23 @@ const useStyles = makeStyles((theme:Theme) => createStyles({
 
 const Navbar = () => {
     const classes = useStyles();
-    const menuRef = useRef<HTMLDivElement>(null);
-    const [isOpen, setIsOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);                               //메뉴 요소를 담기위한 변수
+    const [isOpen, setIsOpen] = useState<boolean>(false);                                //메뉴 상태를 나타내는 변수
 
-    useEffect(() => {
-        const handleClose = (e:any) => {
-            if(menuRef.current && !menuRef.current.contains(e.target)){
+    useEffect(() => {      
+        console.log(menuRef)                                                     
+        const handleClose = (e: MouseEvent):void => {                           //메뉴 외에 클릭시 메뉴를 닫는 클릭 이벤트 함수
+            if(menuRef.current && !menuRef.current.contains(e.target as Node)){ //해당 요소에서 클릭이 일어났는지 확인
                 setIsOpen(false)
             }
         }
-        document.addEventListener('mousedown',handleClose);
-        return () => { window.addEventListener('mousedown',handleClose); }
+        document.addEventListener('mousedown',handleClose);                     //클릭 이벤트가 발생할 경우 handlClose 함수 호출
+        return () =>  document.removeEventListener('mousedown', handleClose);
     })
 
-    const handleClick = () => {
-        console.log('click')
-        setIsOpen(!isOpen)
-    }
-
+    const handleClick = () => setIsOpen(!isOpen)                                //메뉴버튼 클릭 이벤트
+        
+    
 
     return(
         <>
@@ -185,14 +184,12 @@ const Navbar = () => {
                         <IconButton edge="start" onClick={() => handleClick()} className={classes.MenuBtn} color="inherit" aria-label="menu">
                             <MenuIcon />
                         </IconButton>
-
                         <div>
                             <button className={classes.LogoBtn}>
                                 <img src="img/capalogo.png" className={classes.BigLogo} alt="CAPA 파트너스"/>
                                 <img src="img/capalogosmall.png" className={classes.SmallLogo} alt="CAPA 파트너스"/>
                             </button>
                         </div>
-
                         <div className={classes.NavBtn}>
                             <Button className={classes.ClientName}>
                                 <img src="img/clientlogo.svg"style={{width:'17px', height:'15px',padding:'2.5px 0px', marginRight:'8px'}} alt="Client Logo"/>A 가공 업체
@@ -204,9 +201,7 @@ const Navbar = () => {
                         </div>
                     </div>
                 </AppBar>
-
                 <div>
-
                     <Fade in={isOpen}>
                         <Box className={classes.MenuBox}>
                             <Slide direction="right" in={isOpen} mountOnEnter unmountOnExit>
@@ -225,7 +220,7 @@ const Navbar = () => {
                             <div className={classes.MenuBack}>
                             </div>
                         </Box>
-                </Fade>
+                    </Fade>
                 </div>
             </div>
         </>

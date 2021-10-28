@@ -1,19 +1,16 @@
-import ItemList from "./ItemList";
 import React, {useEffect, useState} from "react";
+import ItemList from "./ItemList";
+import useFetch from "../hook/useFetch";
+import {options} from '../UseData';
 import { Theme, makeStyles, createStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import Box from '@material-ui/core/Box';
-import {options} from '../DropDownData';
-import useFetch from "../hook/useFetch";
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-    root: {
-        display: 'flex',
-        '& > * + *': {
-            marginLeft: theme.spacing(2),
-        },
-    },
     Progress:{
         position:'fixed',
         width:'100vw',
@@ -59,7 +56,7 @@ interface ItemFilterProps {
     toggle: number;
 }
 
-interface  ItemSet{
+interface  Item{
     id:number,
     title:string,
     client:string,
@@ -71,24 +68,29 @@ interface  ItemSet{
     status:string
 }
 
+function Alert(props: AlertProps) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const ItemFilter = ({filter,toggle}:ItemFilterProps ) => {
 
         const classes = useStyles();
-        const [loading, setLoading] = useState(false)
-        const {data,error} = useFetch('http://localhost:8000/requests')
-        let [item,setItem] = useState<ItemSet[]>([])
+        const [loading, setLoading] = useState<boolean>(false)                              //로딩 표시 상태 제어용 변수
+        const [isOpen, setIsOpen] = useState<boolean>(false)                                //에러 알림창 상태 제어용 변수
+        const {data,error} = useFetch('http://localhost:8000/requests')                     //데이터와 에러를 가져오는 변수
+        let [item,setItem] = useState<Item[]>([])                                           //필터링된 데이터를 담는 변수
 
         useEffect(() => {
-            setLoading(true)
+            setLoading(true)                                                                //로딩창 표시
             setTimeout(() => {
-                let result: ItemSet[] = []
-                let material:string[] = filter.filter(val => options.material.includes(val)) //필터 재료값
-                let method:string[] = filter.filter(val => options.process.includes(val))    //필터 가공방식
-                {data && data.forEach((value:ItemSet) => {
-                        let intersection: string[] = []
-                        let itemValue: string[] = []
-                        itemValue = itemValue.concat(value.material,value.method)
+                let result:Item[] = []                                                      //필터 조건에 맞을경우 해당 오브젝트를 담는 변수
+                let material:string[] = filter.filter(val => options.material.includes(val))//필터 재료값
+                let method:string[] = filter.filter(val => options.process.includes(val))   //필터중 가공방식에 해당하는 필터
+
+                {data && data.forEach((value:Item) => {                                     //data를 필터링 하기위한 반복문
+                        let intersection: string[] = []                                     //필터와 data의 교집합을 담을 변수
+                        let itemValue: string[] = []                                        //item의 가공방법 또는 재질을 담기위한 변수
+                        itemValue = itemValue.concat(value.material,value.method)           
 
                         if (material.length > 0 && method.length > 0) {
                             intersection = itemValue.filter(val => filter.includes(val))
@@ -126,15 +128,30 @@ const ItemFilter = ({filter,toggle}:ItemFilterProps ) => {
                     setItem(data)
                     setLoading(false)
                 }
-
+                
+                {error && setIsOpen(true)}
             },500)
-        },[filter,toggle,data])
+
+
+        },[filter,toggle,data,error])
+
+    const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setIsOpen(false)
+    }
 
     return (
         <>
+            <Snackbar anchorOrigin={{ vertical: 'top',horizontal: 'center' }}  open={isOpen} autoHideDuration={3000} onClose={handleClose}>
+                    <Alert onClose={handleClose} style={{color:'#e53935'}} severity="error">
+                            데이터를 서버에서 불러오지 못했습니다.
+                    </Alert>
+            </Snackbar>
             { item.length > 0 ?
                 <Box className={classes.ItemList}>{item.map((item) => {return(<ItemList key={item.id} data={item}/>)})}</Box>
-                : <div className={classes.NoItem}>조건에 맞는 경적 요청이 없습니다.</div>}
+                : <div className={classes.NoItem}>조건에 맞는 견적 요청이 없습니다.</div>}
 
         <Fade in={loading}>
             <div className={classes.Progress}>

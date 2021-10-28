@@ -1,9 +1,6 @@
 import {Theme, makeStyles, createStyles} from "@material-ui/core/styles";
-import React, {useEffect, useState} from "react";
+
 const useStyles = makeStyles((theme:Theme) => createStyles({
-    root: {
-        flexGrow: 1,
-    },
     ItemCard:{
         display:'flex',
         flexDirection:'column',
@@ -138,41 +135,42 @@ interface ItemData{
 
 const ItemList = ({data}:{data:ItemData}) => {
     const classes = useStyles();
+
     return(
         <>
-                    <div key={data.id} className={classes.ItemCard}>
-                        <div className={classes.CardTop}>
-                            <div className={classes.Header}>
-                                <div className={classes.Title}>{data.title}</div>
-                                { data.status === "상담중" ?
-                                 <div className={classes.Meeting}>상담중</div> : <div></div>}
-                            </div>
-                            <div className={classes.Client}>{data.client}</div>
-                            <div className={classes.OrderExp}>{data.due} 까지 납기</div>
-                        </div>
-                        <div className={classes.CardBottom}>
-                            <div className={classes.OrderInfo}>
-                                <div className={classes.OrderProp}>도면개수</div>
-                                <div className={classes.OrderValue}>{data.count}개</div>
-                            </div>
-                            <div className={classes.OrderInfo}>
-                                <div className={classes.OrderProp}>총 수량</div>
-                                <div className={classes.OrderValue}>{data.amount}개</div>
-                            </div>
-                            <div className={classes.OrderInfo}>
-                                <div className={classes.OrderProp}>가공방식</div>
-                                <div className={classes.OrderValue}>{data.method.join(", ")}</div>
-                            </div>
-                            <div className={classes.OrderInfo}>
-                                <div className={classes.OrderProp}>재료</div>
-                                <div className={classes.OrderValue}>{data.material.join(", ")}</div>
-                            </div>
-                        </div>
-                        <div className={classes.CardBtn}>
-                            <button className={classes.DetailBtn}>요청 내역 보기</button>
-                            <button className={classes.ChatBtn}>채팅하기</button>
-                        </div>
+            <div key={data.id} className={classes.ItemCard}>
+                <div className={classes.CardTop}>
+                    <div className={classes.Header}>
+                        <div className={classes.Title}>{data.title}</div>
+                        { data.status === "상담중" &&
+                            <div className={classes.Meeting}>상담중</div>}
                     </div>
+                    <div className={classes.Client}>{data.client}</div>
+                    <div className={classes.OrderExp}>{data.due} 까지 납기</div>
+                </div>
+                <div className={classes.CardBottom}>
+                    <div className={classes.OrderInfo}>
+                        <div className={classes.OrderProp}>도면개수</div>
+                        <div className={classes.OrderValue}>{data.count}개</div>
+                    </div>
+                    <div className={classes.OrderInfo}>
+                        <div className={classes.OrderProp}>총 수량</div>
+                        <div className={classes.OrderValue}>{data.amount}개</div>
+                    </div>
+                    <div className={classes.OrderInfo}>
+                        <div className={classes.OrderProp}>가공방식</div>
+                        <div className={classes.OrderValue}>{data.method.join(", ")}</div>
+                    </div>
+                    <div className={classes.OrderInfo}>
+                        <div className={classes.OrderProp}>재료</div>
+                        <div className={classes.OrderValue}>{data.material.join(", ")}</div>
+                    </div>
+                </div>
+                <div className={classes.CardBtn}>
+                    <button className={classes.DetailBtn}>요청 내역 보기</button>
+                    <button className={classes.ChatBtn}>채팅하기</button>
+                </div>
+            </div>
         </>
     )
 }
