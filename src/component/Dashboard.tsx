@@ -168,7 +168,7 @@ const Dashboard = () => {
         return () =>  document.removeEventListener('mousedown', handleClose);
     },[listRef])
 
-    const handleClick = (type:string):void =>{                                                      //드롭다운 클릭 이벤트 함수
+    const handleClick = (type:string):void =>{                                                 //드롭다운 클릭 이벤트 함수
         let none = (type === "MaterialList") ? "ProcessList" : "MaterialList"                  //클릭한 필터를 구분을 위한 변수
         const ClickEle = document.getElementById(type) as HTMLDivElement                       //드롭다운 엘리먼트 style속성 제어를 위한 상수 선언
         const NoneEle = document.getElementById(none) as HTMLDivElement

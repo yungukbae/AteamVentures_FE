@@ -161,8 +161,7 @@ const Navbar = () => {
     const menuRef = useRef<HTMLDivElement>(null);                               //메뉴 요소를 담기위한 변수
     const [isOpen, setIsOpen] = useState<boolean>(false);                                //메뉴 상태를 나타내는 변수
 
-    useEffect(() => {      
-        console.log(menuRef)                                                     
+    useEffect(() => {                                                      
         const handleClose = (e: MouseEvent):void => {                           //메뉴 외에 클릭시 메뉴를 닫는 클릭 이벤트 함수
             if(menuRef.current && !menuRef.current.contains(e.target as Node)){ //해당 요소에서 클릭이 일어났는지 확인
                 setIsOpen(false)
