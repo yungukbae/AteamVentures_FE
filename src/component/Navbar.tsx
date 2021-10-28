@@ -190,7 +190,7 @@ const Navbar = () => {
                         </div>
                         <div className={classes.NavBtn}>
                             <Button className={classes.ClientName}>
-                                <img src="img/clientlogo.svg"style={{width:'17px', height:'15px',padding:'2.5px 0px', marginRight:'8px'}} alt="Client Logo"/>A 가공 업체
+                                <img src="img/clientlogo.svg"style={{width:'17px', height:'15px', marginRight:'8px'}} alt="Client Logo"/>A 가공 업체
                             </Button>
                             <div className={classes.Divider}/>
                             <Button className={classes.LogoutBtn}>로그아웃</Button>
