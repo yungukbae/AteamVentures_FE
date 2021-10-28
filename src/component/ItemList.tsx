@@ -1,23 +1,8 @@
-import Box from '@material-ui/core/Box';
-import {makeStyles} from "@material-ui/core/styles";
+import {Theme, makeStyles, createStyles} from "@material-ui/core/styles";
 import React, {useEffect, useState} from "react";
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme:Theme) => createStyles({
     root: {
         flexGrow: 1,
-    },
-    ItemList:{
-        display:'grid',
-        gridTemplateColumns:'1fr 1fr 1fr',
-        gap:'8px',
-        width:'100%',
-        marginTop:'30px',
-        padding:'2px 0',
-        [theme.breakpoints.down(990)]: {
-            gridTemplateColumns:'1fr 1fr',
-        },
-        [theme.breakpoints.down(650)]: {
-            gridTemplateColumns:'1fr',
-        }
     },
     ItemCard:{
         display:'flex',
@@ -139,8 +124,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-interface ItemListData{
-    item: {
+interface ItemData{
         id:number,
         title:string,
         client:string,
@@ -149,46 +133,39 @@ interface ItemListData{
         amount:number,
         method:string[],
         material:string[],
-        status:string
-    },
-    idx:number
+        status:string,
 }
 
-const ItemList = ({data}:{data:any[]}) => {
+const ItemList = ({data}:{data:ItemData}) => {
     const classes = useStyles();
-
     return(
         <>
-            <Box className={classes.ItemList}>
-            {data.map(({item, idx}:ItemListData) => {
-                return (
-                    <div key={idx} className={classes.ItemCard}>
+                    <div key={data.id} className={classes.ItemCard}>
                         <div className={classes.CardTop}>
                             <div className={classes.Header}>
-                                <div className={classes.Title}>{item.title}</div>
-                                { () => {if(item.status === "상담중"){
-                                 <div className={classes.Meeting}>상담중</div>}
-                                }}
+                                <div className={classes.Title}>{data.title}</div>
+                                { data.status === "상담중" ?
+                                 <div className={classes.Meeting}>상담중</div> : <div></div>}
                             </div>
-                            <div className={classes.Client}>{item.client}</div>
-                            <div className={classes.OrderExp}>{item.due} 까지 납기</div>
+                            <div className={classes.Client}>{data.client}</div>
+                            <div className={classes.OrderExp}>{data.due} 까지 납기</div>
                         </div>
                         <div className={classes.CardBottom}>
                             <div className={classes.OrderInfo}>
                                 <div className={classes.OrderProp}>도면개수</div>
-                                <div className={classes.OrderValue}>{item.count}개</div>
+                                <div className={classes.OrderValue}>{data.count}개</div>
                             </div>
                             <div className={classes.OrderInfo}>
                                 <div className={classes.OrderProp}>총 수량</div>
-                                <div className={classes.OrderValue}>{item.amount}개</div>
+                                <div className={classes.OrderValue}>{data.amount}개</div>
                             </div>
                             <div className={classes.OrderInfo}>
                                 <div className={classes.OrderProp}>가공방식</div>
-                                <div className={classes.OrderValue}>{item.method.join(", ")}</div>
+                                <div className={classes.OrderValue}>{data.method.join(", ")}</div>
                             </div>
                             <div className={classes.OrderInfo}>
                                 <div className={classes.OrderProp}>재료</div>
-                                <div className={classes.OrderValue}>{item.material.join(", ")}</div>
+                                <div className={classes.OrderValue}>{data.material.join(", ")}</div>
                             </div>
                         </div>
                         <div className={classes.CardBtn}>
@@ -196,9 +173,6 @@ const ItemList = ({data}:{data:any[]}) => {
                             <button className={classes.ChatBtn}>채팅하기</button>
                         </div>
                     </div>
-                )
-            })}
-            </Box>
         </>
     )
 }

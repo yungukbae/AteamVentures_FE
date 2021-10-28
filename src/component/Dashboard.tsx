@@ -5,7 +5,6 @@ import Box from '@material-ui/core/Box';
 import Switch from '@material-ui/core/Switch';
 import {Theme, makeStyles, createStyles,withStyles} from "@material-ui/core/styles";
 import {options} from '../DropDownData';
-import useFetch from "../hook/useFetch";
 import ItemFilter from "./ItemFilter";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -151,16 +150,9 @@ const ToggleSwitch = withStyles({
     },
 })(Switch);
 
-export interface document{
-    getElementById:{
-        elementId:string
-    }
-}
-
 const Dashboard = () => {
     const classes = useStyles();
     const listRef = useRef<HTMLDivElement>(null);
-    const {data,error}:{data:any[]; error:string} = useFetch('http://localhost:8000/requests')
     const [toggle, setToggle] = useState<boolean>(false);
     const [procbtn,setProcbtn] = useState<number>(0);
     const [matbtn,setMatbtn] = useState<number>(0);
@@ -184,6 +176,7 @@ const Dashboard = () => {
         let none = (type === "MaterialList") ? "ProcessList" : "MaterialList"
         const typeele = document.getElementById(type) as HTMLDivElement
         const noneele = document.getElementById(none) as HTMLDivElement
+
         if(typeele.style.display  === "flex"){
             typeele.style.display = "none"
         }else if(type){
@@ -193,7 +186,6 @@ const Dashboard = () => {
     }
 
     const handleCheck = (isChecked:boolean, item:string) => {
-
         if(isChecked){
             setFilter(filter => filter.concat(item))
         }else{
@@ -230,9 +222,9 @@ const Dashboard = () => {
         const btn = document.getElementById("FilterReset") as HTMLDivElement
         const procele = document.getElementById("ProcessBtn") as HTMLDivElement
         const matele = document.getElementById("MaterialBtn") as HTMLDivElement
+
         if(isChecked){
             btn.style.display = "flex"
-
         }else{
             if(filter.length === 1){
                 btn.style.display = "none"
@@ -303,7 +295,7 @@ const Dashboard = () => {
                             </div>
                         </Box>
                         <Box>
-                            { data && <ItemFilter filter={filter} toggle={toggle ? 1 : 0} data={data} error={error}/>}
+                            <ItemFilter filter={filter} toggle={toggle ? 1 : 0}/>
                         </Box>
                 </Container>
             </React.Fragment>

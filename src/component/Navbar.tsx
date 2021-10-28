@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { Theme, makeStyles, createStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -8,7 +8,7 @@ import Slide from '@material-ui/core/Slide';
 import Box from '@material-ui/core/Box';
 import Fade from '@material-ui/core/Fade';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme:Theme) => createStyles({
     root: {
         flexGrow: 1,
     },
@@ -103,19 +103,22 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     MenuBox:{
-        position:'fixed',
-        display:'flex',
-        flexFlow:'row',
-        width:'100%',
-        height:'100%',
-        left:'0',
-        top:'0'
+        display:'none',
+        [theme.breakpoints.down(670)]:{
+            position:'fixed',
+            display:'flex',
+            flexFlow:'row',
+            width:'100%',
+            height:'100%',
+            left:'0',
+            top:'0'
+        }
     },
     Menu:{
         width:'280px',
         height:'100%',
         backgroundColor:'#FFFFFF',
-        zIndex:'99999'
+        zIndex:99999
     },
     MenuBack:{
         position:"fixed",
@@ -155,11 +158,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
     const classes = useStyles();
-    const menuRef = useRef();
+    const menuRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        const handleClose = (e) => {
+        const handleClose = (e:any) => {
             if(menuRef.current && !menuRef.current.contains(e.target)){
                 setIsOpen(false)
             }
