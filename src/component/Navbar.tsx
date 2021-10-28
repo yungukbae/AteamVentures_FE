@@ -207,7 +207,7 @@ const Navbar = () => {
                                 </div>
                                 <div className={classes.MenuMain}>
                                     <div className={classes.MenuList}>
-                                        <img src="img/menuclientlogo.svg" style={{width:'15px', height:'15px',padding:'2.5px 0px', marginRight:'8px'}} alt="Client Logo"/> 파트너정밀가공</div>
+                                        <img src="img/menuclientlogo.svg" style={{width:'15px', height:'15px', marginRight:'8px'}} alt="Client Logo"/> 파트너정밀가공</div>
                                     <div className={classes.MenuList}>로그아웃</div>
                                 </div>
                             </div>
