@@ -117,13 +117,13 @@ const ItemFilter = ({filter,toggle}:ItemFilterProps ) => {
                 if(toggle === 1) {                                                                     //상담중인 아이템만 표시
                     let toggleItem = data.filter((val:{status:string}) => val.status === "상담중")       //data의 status가 상담중일 경우 toggleItem변수에 삽입
                     setItem(toggleItem)                                                                //상담중인 아이템을 출력변수에 삽입
-                    // setLoading(false)                                                                   
+                    setLoading(false)                                                                   
                 }else if(result.length > 0 || (filter.length > 0 && result.length === 0)){            //필터를 적용했거나, 필터 조건에 맞는 값이 없을경우
                     setItem(result)                                                                   //아무것도 출력하지 않도록 result값을 삽입
-                    // setLoading(false)                                                           
+                    setLoading(false)                                                           
                 }else{
                     setItem(data)                                                                       //아무 조건도 안걸려있을 경우 모든 데이터 출력
-                    // setLoading(false)
+                    setLoading(false)
                 }
                 
                 {error && setIsOpen(true)}                                                              //데이터 통신중 에러 발생시 알림창 출력
