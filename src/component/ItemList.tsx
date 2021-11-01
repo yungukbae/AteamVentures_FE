@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme:Theme) => createStyles({
     ItemCard:{
         display:'flex',
         flexDirection:'column',
-        minWidth:'240px',
+        minWidth:'320px',
         height:'356px',
         padding:'24px 16px',
         border:'1px solid #E5E5E5',
@@ -134,6 +134,7 @@ interface ItemData{
 }
 
 const ItemList = ({data}:{data:ItemData}) => {
+    
     const classes = useStyles();
 
     return(
