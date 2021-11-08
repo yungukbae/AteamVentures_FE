@@ -158,10 +158,10 @@ const Dashboard = () => {
     useEffect(() => {
         const handleClose = (e: MouseEvent): void => {                                        //드롭다운 요소 외에 클릭시 드롭다운을 닫는 이벤트 함수
             const ProcList = document.getElementById("ProcessList") as HTMLDivElement                
-            const MatBtn = document.getElementById("MaterialList") as HTMLDivElement                 
+            const MatList = document.getElementById("MaterialList") as HTMLDivElement                 
             if(listRef.current && !listRef.current.contains(e.target as Node)){               //드롭다운 요소 내부에서에서 클릭이 일어났는지 판단하는 구문
                 ProcList.style.display = "none"                                               //드롭다운 요소가 아닐경우 드롭다운 리스트 숨기기
-                MatBtn.style.display = "none"
+                MatList.style.display = "none"
             }
         }
         document.addEventListener('mousedown',handleClose);                                    //클릭 이벤트가 발생할 경우 handlClose 함수 호출

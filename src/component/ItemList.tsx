@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme:Theme) => createStyles({
     ItemCard:{
         display:'flex',
         flexDirection:'column',
-        minWidth:'320px',
+        minWidth:'210px',
         height:'356px',
         padding:'24px 16px',
         border:'1px solid #E5E5E5',
